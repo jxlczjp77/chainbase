@@ -38,7 +38,7 @@ namespace chainbase {
       bool write = flags & database::read_write;
 
       if (!bfs::exists(dir)) {
-         if(!write) BOOST_THROW_EXCEPTION( std::runtime_error( "database file not found at " + dir.native() ) );
+         if(!write) BOOST_THROW_EXCEPTION( std::runtime_error( "database file not found at " + dir.string() ) );
       }
 
       bfs::create_directories(dir);
@@ -109,7 +109,10 @@ namespace chainbase {
       } else {
          _segment.reset( new bip::managed_mapped_file( bip::create_only,
                                                        abs_path.generic_string().c_str(), shared_file_size,
-                                                       0, S_IRUSR | S_IWUSR | S_IRGRP | S_IWGRP | S_IROTH
+                                                       0
+#ifndef WINDOWS
+			 , S_IRUSR | S_IWUSR | S_IRGRP | S_IWGRP | S_IROTH
+#endif
                                                        ) );
          _segment->find_or_construct< environment_check >( "environment" )();
       }
@@ -129,7 +132,10 @@ namespace chainbase {
       {
          _meta.reset( new bip::managed_mapped_file( bip::create_only,
                                                     abs_path.generic_string().c_str(), sizeof( read_write_mutex_manager ) * 2,
-                                                    0, S_IRUSR | S_IWUSR | S_IRGRP | S_IWGRP | S_IROTH
+                                                    0
+#ifndef WINDOWS
+			 , S_IRUSR | S_IWUSR | S_IRGRP | S_IWGRP | S_IROTH
+#endif
                                                     ) );
 
          _rw_manager = _meta->find_or_construct< read_write_mutex_manager >( "rw_manager" )();
@@ -188,14 +194,10 @@ namespace chainbase {
    }
 
    void database::_msync_database() {
-#ifdef _WIN32
-#warning Safe database dirty handling not implemented on WIN32
-#else
          if(msync(_segment->get_address(), _segment->get_size(), MS_SYNC))
             perror("Failed to msync DB file");
          if(msync(_meta->get_address(), _meta->get_size(), MS_SYNC))
             perror("Failed to msync DB metadata file");
-#endif
    }
 
    void database::set_require_locking( bool enable_require_locking )

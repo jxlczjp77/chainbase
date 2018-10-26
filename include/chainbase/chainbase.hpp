@@ -27,6 +27,7 @@
 #include <stdexcept>
 #include <typeindex>
 #include <typeinfo>
+#include <set>
 
 #ifndef CHAINBASE_NUM_RW_LOCKS
    #define CHAINBASE_NUM_RW_LOCKS 10
