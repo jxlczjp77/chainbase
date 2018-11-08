@@ -110,7 +110,7 @@ namespace chainbase {
          _segment.reset( new bip::managed_mapped_file( bip::create_only,
                                                        abs_path.generic_string().c_str(), shared_file_size,
                                                        0
-#ifndef WINDOWS
+#ifndef _MSC_VER
 			 , S_IRUSR | S_IWUSR | S_IRGRP | S_IWGRP | S_IROTH
 #endif
                                                        ) );
@@ -133,7 +133,7 @@ namespace chainbase {
          _meta.reset( new bip::managed_mapped_file( bip::create_only,
                                                     abs_path.generic_string().c_str(), sizeof( read_write_mutex_manager ) * 2,
                                                     0
-#ifndef WINDOWS
+#ifndef _MSC_VER
 			 , S_IRUSR | S_IWUSR | S_IRGRP | S_IWGRP | S_IROTH
 #endif
                                                     ) );
