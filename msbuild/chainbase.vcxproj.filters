@@ -21,6 +21,9 @@
     <ClCompile Include="..\src\mman\mman.c">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\pinnable_mapped_file.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\include\chainbase\chainbase.hpp">

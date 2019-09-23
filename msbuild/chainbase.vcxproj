@@ -13,6 +13,7 @@
   <ItemGroup>
     <ClCompile Include="..\src\chainbase.cpp" />
     <ClCompile Include="..\src\mman\mman.c" />
+    <ClCompile Include="..\src\pinnable_mapped_file.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\include\chainbase\chainbase.hpp" />
